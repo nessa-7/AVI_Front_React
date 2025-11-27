@@ -1,4 +1,59 @@
+import Swal from 'sweetalert2'
+
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 function Login() {
+
+    const navigate = useNavigate();
+
+    const [id, setId] = useState("");
+    const [pass, setPass] = useState("");
+
+
+    async function Ingresar(event) {
+        event.preventDefault();
+
+        const idEntero = parseInt(id)
+
+        const respuesta = await fetch("http://localhost:4000/api/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: idEntero, pass }),
+        });
+
+        if (respuesta.ok) {
+
+            const data = await respuesta.json()
+            localStorage.setItem("token", data.token)
+            localStorage.setItem("rol", data.rol)
+            localStorage.setItem("nombre", data.nombre_completo)
+
+            Swal.fire({
+                icon: "success",
+                title: "¡Bienvenido a AVI!",
+                confirmButtonColor: "#39a900",
+            }).then(() => {
+                if(data.rol === "admin"){
+                    navigate("/Estadisticas")
+                } else {
+                    navigate("/BienvenidaTest")
+                }
+            })
+
+        } else {
+
+            Swal.fire({
+                icon: "error",
+                title: "Error al iniciar sesion",
+                confirmButtonColor: "#39a900",
+            })
+
+        }
+    }
+
 
     return (
         <section className="auth-section">
@@ -8,16 +63,16 @@ function Login() {
                     <p>Accede a tu cuenta para continuar con el test vocacional</p>
                 </div>
 
-                <form id="loginForm" className="auth-form">
+                <form id="loginForm" className="auth-form" onSubmit={Ingresar}>
                     <div className="form-group">
                         <label htmlFor="identificacion">Número de Identificación</label>
-                        <input type="text" id="identificacion" name="identificacion" required />
+                        <input type="text" id="identificacion" name="identificacion" required onChange={(event)=> setId(event.target.value)}/>
                         <span className="error-message" id="identificacion-error"></span>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="password">Contraseña</label>
-                        <input type="password" id="password" name="password" required />
+                        <input type="password" id="password" name="password" required onChange={(event)=> setPass(event.target.value)}/>
                         <span className="error-message" id="password-error"></span>
                     </div>
 

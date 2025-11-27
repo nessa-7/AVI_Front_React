@@ -7,6 +7,8 @@ function BienvenidaTest() {
     navigate("/test");
   }
 
+  const nombre = localStorage.getItem("nombre")
+
   return (
     <div>
       <section className="welcome-section">
@@ -15,7 +17,7 @@ function BienvenidaTest() {
             <h1 className="welcome-title">¡Bienvenido al Test Vocacional!</h1>
 
             <div className="user-info">
-              <p>Hola, <span id="userName"></span></p>
+              <p>Hola, {nombre}</p>
             </div>
 
             <div className="test-info">

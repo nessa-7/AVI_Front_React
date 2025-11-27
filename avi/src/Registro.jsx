@@ -1,6 +1,50 @@
+import Swal from 'sweetalert2'
+import { useState } from "react";
+
+function Registro() {
+
+  const [idASPIRANTE, setId] = useState("");
+  const [nombre_completo, setNombre] = useState("");
+  const [email, setEmail] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [password, setPass] = useState("");
+
+  async function registrarAspirante(event) {
+        event.preventDefault();
+
+        const idEntero = parseInt(idASPIRANTE)
+
+        const respuesta = await fetch("http://localhost:4000/api/registeraspirante", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({idASPIRANTE: idEntero, nombre_completo, email, telefono, password }),
+        });
+
+        if (respuesta.ok){
+
+          Swal.fire({
+            icon: "success",
+            title: "¡Registro exitoso!",
+            text: "Tu cuenta ha sido creada correctamente",
+            confirmButtonColor: "#39a900",
+          }).then(() => {
+            window.location.href = "/login"
+          })
+
+        }else{
+
+          Swal.fire({
+            icon: "error",
+            title: "Error en el registro",
+            confirmButtonColor: "#39a900",
+          })
+
+        }
+  }
 
 
-const Registro = () => {
   return (
     <>   
       <section className="auth-section">
@@ -10,30 +54,30 @@ const Registro = () => {
             <p>Regístrate para acceder al test vocacional AVI</p>
           </div>
 
-          <form className="auth-form">
+          <form className="auth-form" onSubmit={registrarAspirante}>
             <div className="form-group">
               <label htmlFor="identificacion">Número de Identificación *</label>
-              <input type="text" id="identificacion" name="identificacion" required />
+              <input type="text" id="identificacion" name="identificacion" required onChange={(event)=> setId(event.target.value)}/>
             </div>
 
             <div className="form-group">
               <label htmlFor="nombreCompleto">Nombre Completo *</label>
-              <input type="text" id="nombreCompleto" name="nombreCompleto" required />
+              <input type="text" id="nombreCompleto" name="nombreCompleto" required onChange={(event)=> setNombre(event.target.value)}/>
             </div>
 
             <div className="form-group">
               <label htmlFor="correo">Correo Electrónico *</label>
-              <input type="email" id="correo" name="correo" required />
+              <input type="email" id="correo" name="correo" required onChange={(event)=> setEmail(event.target.value)}/>
             </div>
 
             <div className="form-group">
               <label htmlFor="telefono">Teléfono *</label>
-              <input type="tel" id="telefono" name="telefono" required />
+              <input type="tel" id="telefono" name="telefono" required onChange={(event)=> setTelefono(event.target.value)} />
             </div>
 
             <div className="form-group">
               <label htmlFor="password">Contraseña *</label>
-              <input type="password" id="password" name="password" required />
+              <input type="password" id="password" name="password" required onChange={(event)=> setPass(event.target.value)}/>
               <div className="password-requirements">
                 <small>La contraseña debe tener:</small>
                 <ul>
