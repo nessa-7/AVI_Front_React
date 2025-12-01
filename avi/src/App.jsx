@@ -10,8 +10,8 @@ import Programas from "./Programas";
 import Mapa from "./Mapa";
 import Login from "./Login";
 import Inicio from "./Inicio";
-import Sidebar from "./sidebar";
 import Estadisticas from "./Estadisticas";
+import AspirantesGet from "./AspirantesGET";
 
 function App() {
 
@@ -29,6 +29,7 @@ function App() {
             <Route path="/mapa" element={<Mapa></Mapa>}></Route>
             <Route path="/login" element={<Login></Login>}></Route>
             <Route path="/estadisticas" element={<Estadisticas></Estadisticas>}></Route>
+            <Route path="/listaraspirantes" element={<AspirantesGet></AspirantesGet>}></Route>
           </Routes>
         </BrowserRouter>
 
